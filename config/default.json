@@ -9,7 +9,7 @@
   "authentication": {
     "entity": "user",
     "service": "users",
-    "secret": "6ECgeNHAJWp8HBNrQM8iEJW/Qig=",
+    "secret": "tkKXgnvI/vi0kWak5fD1ymIC1xo=",
     "authStrategies": [
       "jwt",
       "local"
@@ -37,6 +37,10 @@
           "profile",
           "openid"
         ]
+      },
+      "github": {
+        "key": "<github oauth key>",
+        "secret": "<github oauth secret>"
       }
     }
   },
