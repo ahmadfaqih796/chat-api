@@ -1,17 +1,23 @@
 // Initializes the `auth-management` service on path `/auth-management`
-const { AuthManagement } = require('./auth-management.class');
-const hooks = require('./auth-management.hooks');
+const hooks = require("./auth-management.hooks");
+const authManagement = require("feathers-authentication-management");
+const notifier = require("./notifier");
 
 module.exports = function (app) {
-  const options = {
-    paginate: app.get('paginate')
-  };
+  const options = Object.assign(notifier(app), {
+    path: "/auth-management",
+    paginate: app.get("paginate"),
+    service: "/users",
+    identifyUserProps: ["email", "verifyToken", "resetToken"],
+    skipIsVerifiedCheck: false,
+    reuseResetToken: true,
+    shortTokenLen: 5,
+    resetAttempts: 5,
+  });
 
-  // Initialize our service with any options it requires
-  app.use('/auth-management', new AuthManagement(options, app));
+  app.configure(authManagement(options));
 
-  // Get our initialized service so that we can register hooks
-  const service = app.service('auth-management');
+  const service = app.service("/auth-management");
 
   service.hooks(hooks);
 };

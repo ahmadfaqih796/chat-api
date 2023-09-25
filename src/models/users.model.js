@@ -21,6 +21,52 @@ module.exports = function (app) {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      // bahan untuk reset password
+      resetAttempts: {
+        type: DataTypes.INTEGER,
+        field: "resetAttempts",
+      },
+      verifyToken: {
+        type: DataTypes.STRING,
+        field: "verifyToken",
+      },
+      verifyShortToken: {
+        type: DataTypes.STRING,
+        field: "verifyShortToken",
+      },
+      isVerified: {
+        type: DataTypes.BOOLEAN,
+        field: "isVerified",
+      },
+      verifyExpires: {
+        type: DataTypes.DATE,
+        field: "verifyExpires",
+      },
+      verifyChanges: {
+        type: DataTypes.STRING,
+        field: "verifyChanges",
+        get() {
+          const value = this.getDataValue("verifyChanges") || "{}";
+          const parsedValue = JSON.parse(value);
+
+          return parsedValue;
+        },
+        set(value) {
+          this.setDataValue("verifyChanges", JSON.stringify(value));
+        },
+      },
+      resetToken: {
+        type: DataTypes.STRING,
+        field: "resetToken",
+      },
+      resetShortToken: {
+        type: DataTypes.STRING,
+        field: "resetShortToken",
+      },
+      resetExpires: {
+        type: DataTypes.DATE,
+        field: "resetExpires",
+      },
 
       googleId: { type: DataTypes.STRING },
     },
