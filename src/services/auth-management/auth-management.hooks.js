@@ -28,7 +28,7 @@ const logError = () => {
           "Kode OTP invalid. Silahkan kirim ulang OTP"
         );
       case "incorrectToken":
-        throw new errors.BadRequest("Kode reset password invalid.");
+        throw new errors.BadRequest("Kode reset password invalid");
       default:
         break;
     }

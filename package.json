@@ -51,6 +51,7 @@
     "dotenv": "^16.3.1",
     "feathers-authentication-management": "^5.0.0",
     "feathers-hooks-common": "^8.1.1",
+    "feathers-mailer": "^4.1.1",
     "feathers-sequelize": "^6.4.0",
     "helmet": "^5.1.1",
     "juice": "^9.1.0",

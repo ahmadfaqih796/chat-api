@@ -12,7 +12,7 @@ const {
 
 module.exports = (app) => {
   const baseUrl =
-    NODE_ENV == "development" ? DASHBOARD_BASE_URL_DEV : DASHBOARD_BASE_URL;
+    NODE_ENV == "development" ? DASHBOARD_BASE_URL : DASHBOARD_BASE_URL;
 
   async function sendEmail(payload) {
     return await app
