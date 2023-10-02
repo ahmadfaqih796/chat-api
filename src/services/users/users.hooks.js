@@ -13,12 +13,13 @@ const {
   iff,
   isProvider,
   preventChanges,
+  disablePagination,
 } = require("feathers-hooks-common");
 
 module.exports = {
   before: {
     all: [],
-    find: [authenticate("jwt")],
+    find: [authenticate("jwt"), disablePagination()],
     get: [authenticate("jwt")],
     create: [hashPassword("password"), addVerification("auth-management")],
     update: [
