@@ -7,13 +7,16 @@ const configureSocket = (server) => {
     },
     // path: "/messages",
   });
-
+  const messages = [];
   io.on("connection", (socket) => {
     console.log("Client connected");
-    console.log("xxxxxxxxx");
+    socket.on("post", (data) => {
+      messages.push(data);
+      io.emit("get", data);
+    });
 
     socket.on("disconnect", () => {
-      // console.log("Client disconnected");
+      console.log("Client disconnected");
     });
   });
 
