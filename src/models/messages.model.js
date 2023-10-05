@@ -62,6 +62,14 @@ module.exports = function (app) {
   messages.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
+    messages.belongsTo(models.users, {
+      foreignKey: "id_sender",
+      as: "user_data",
+    });
+    messages.belongsTo(models.users, {
+      foreignKey: "id_receiver",
+      as: "receiver_data",
+    });
   };
 
   return messages;

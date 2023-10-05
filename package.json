@@ -57,6 +57,7 @@
     "juice": "^9.1.0",
     "mysql2": "^3.5.0",
     "pug": "^3.0.2",
+    "ramda": "^0.29.0",
     "sequelize": "^6.32.1",
     "serve-favicon": "^2.5.0",
     "socket.io": "^4.7.2",
