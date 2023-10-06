@@ -5,7 +5,7 @@ const configureSocket = (server) => {
     cors: {
       origin: "*",
     },
-    // path: "/messages",
+    path: "/ws/",
   });
   const messages = [];
   io.on("connection", (socket) => {

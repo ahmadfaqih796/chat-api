@@ -2,10 +2,23 @@ const { authenticate } = require("@feathersjs/authentication").hooks;
 const { disablePagination } = require("feathers-hooks-common");
 const includeUser = require("../../hooks/includes/include-user");
 
+const HandleGetUser = () => {
+  return async (context) => {
+    const { params, result } = context;
+    result.user_data = {
+      id: params.user.id,
+      name: params.user.name,
+      email: params.user.email,
+    };
+    // context.app.io.emit("post", result);
+    return context;
+  };
+};
+
 module.exports = {
   before: {
-    all: [],
-    find: [authenticate("jwt"), disablePagination(), includeUser()],
+    all: [authenticate("jwt")],
+    find: [disablePagination(), includeUser()],
     get: [],
     create: [],
     update: [],
@@ -17,13 +30,7 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [
-      (context) => {
-        const message = context.result;
-        context.app.io.emit("message-created", message);
-        return context;
-      },
-    ],
+    create: [HandleGetUser()],
     update: [],
     patch: [],
     remove: [],
