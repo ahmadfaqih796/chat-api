@@ -12,6 +12,7 @@ const configureSocket = (server) => {
     console.log("Client connected");
     socket.on("post", (data) => {
       messages.push(data);
+      console.log("ssssssssssssss", data);
       io.emit("get", data);
     });
 
