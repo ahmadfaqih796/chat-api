@@ -5,13 +5,14 @@ const configureSocket = (server) => {
     cors: {
       origin: "*",
     },
-    path: "/ws/",
+    path: "/pesan/",
   });
   const messages = [];
   io.on("connection", (socket) => {
     console.log("Client connected");
     socket.on("post", (data) => {
       messages.push(data);
+      console.log("ssssssssssssss", data);
       io.emit("get", data);
     });
 
