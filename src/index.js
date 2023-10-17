@@ -4,10 +4,10 @@ const app = require("./app");
 const port = app.get("port");
 const server = app.listen(port);
 
-const socketio = require("@feathersjs/socketio");
-const configureSocket = require("./socket");
-const io = configureSocket(server);
-app.configure(socketio(io));
+// const socketio = require("@feathersjs/socketio");
+// const configureSocket = require("./socket");
+// const io = configureSocket(server);
+// app.configure(socketio(io));
 
 process.on("unhandledRejection", (reason, p) =>
   logger.error("Unhandled Rejection at: Promise ", p, reason)
