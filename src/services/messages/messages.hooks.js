@@ -18,7 +18,7 @@ const HandleGetUser = () => {
 module.exports = {
   before: {
     all: [authenticate("jwt")],
-    find: [disablePagination(), includeUser()],
+    find: [disablePagination()],
     get: [],
     create: [],
     update: [],

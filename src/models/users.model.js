@@ -14,7 +14,7 @@ module.exports = function (app) {
         allowNull: false,
         primaryKey: true,
       },
-      name: {
+      fullname: {
         type: DataTypes.STRING,
         allowNull: false,
       },
