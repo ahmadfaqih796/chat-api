@@ -48,6 +48,12 @@ module.exports = function (app) {
     operatorsAliases,
     define: {
       freezeTableName: true,
+      underscored: true,
+      underscoredAll: true,
+      paranoid: true,
+      createdAt: "created_at",
+      updatedAt: "updated_at",
+      deletedAt: "deleted_at",
     },
   });
   const oldSetup = app.setup;
