@@ -37,7 +37,7 @@ module.exports = {
       expiresIn: EXPIRES_IN,
     },
     local: {
-      usernameField: "\\username",
+      usernameField: "email",
       passwordField: "password",
     },
     oauth: {
