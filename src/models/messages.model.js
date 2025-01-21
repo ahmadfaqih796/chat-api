@@ -14,38 +14,34 @@ module.exports = function (app) {
         allowNull: false,
         primaryKey: true,
       },
-      id_sender: {
+      // chat_id: {
+      //   type: DataTypes.UUID,
+      //   allowNull: false,
+      //   references: {
+      //     model: "chats",
+      //     key: "id",
+      //   },
+      //   onDelete: "CASCADE",
+      // },
+      sender_id: {
         type: DataTypes.UUID,
-        allowNull: true,
+        allowNull: false,
+        references: {
+          model: "users",
+          key: "id",
+        },
+        onDelete: "CASCADE",
       },
-      id_receiver: {
-        type: DataTypes.UUID,
-        allowNull: true,
-      },
-      text: {
+      content: {
         type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      message_type: {
+        type: DataTypes.STRING(100),
         allowNull: true,
       },
       is_read: {
         type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-      },
-      is_deleted: {
-        type: DataTypes.BOOLEAN,
-        allowNull: true,
-        defaultValue: false,
-      },
-      file_name: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      file_url: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      file_type: {
-        type: DataTypes.STRING,
         allowNull: true,
       },
     },
@@ -63,13 +59,13 @@ module.exports = function (app) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
     messages.belongsTo(models.users, {
-      foreignKey: "id_sender",
+      foreignKey: "sender_id",
       as: "user_data",
     });
-    messages.belongsTo(models.users, {
-      foreignKey: "id_receiver",
-      as: "receiver_data",
-    });
+    // messages.belongsTo(models.users, {
+    //   foreignKey: "chat_id",
+    //   as: "chat_data",
+    // });
   };
 
   return messages;
