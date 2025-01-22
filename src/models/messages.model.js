@@ -14,15 +14,15 @@ module.exports = function (app) {
         allowNull: false,
         primaryKey: true,
       },
-      // chat_id: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   references: {
-      //     model: "chats",
-      //     key: "id",
-      //   },
-      //   onDelete: "CASCADE",
-      // },
+      chat_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+        references: {
+          model: "chats",
+          key: "id",
+        },
+        onDelete: "CASCADE",
+      },
       sender_id: {
         type: DataTypes.UUID,
         allowNull: false,
@@ -42,6 +42,7 @@ module.exports = function (app) {
       },
       is_read: {
         type: DataTypes.BOOLEAN,
+        defaultValue: false,
         allowNull: true,
       },
     },
@@ -58,14 +59,14 @@ module.exports = function (app) {
   messages.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
+    messages.belongsTo(models.chats, {
+      foreignKey: "chat_id",
+      as: "chat",
+    });
     messages.belongsTo(models.users, {
       foreignKey: "sender_id",
-      as: "user_data",
+      as: "sender",
     });
-    // messages.belongsTo(models.users, {
-    //   foreignKey: "chat_id",
-    //   as: "chat_data",
-    // });
   };
 
   return messages;

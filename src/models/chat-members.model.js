@@ -48,11 +48,11 @@ module.exports = function (app) {
     // See https://sequelize.org/master/manual/assocs.html
     chatMembers.belongsTo(models.chats, {
       foreignKey: "chat_id",
-      as: "chat_data",
+      as: "chat",
     });
     chatMembers.belongsTo(models.users, {
       foreignKey: "user_id",
-      as: "user_data",
+      as: "user",
     });
   };
 
