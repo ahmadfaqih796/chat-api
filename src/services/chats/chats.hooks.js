@@ -5,10 +5,24 @@ const handleBeforeCreate = () => {
   return async (context) => {
     const { app, data } = context;
     const { user } = context.params;
-    console.log("dara", data);
 
-    if (!Object.keys(data).includes("members")) {
-      throw new errors.BadRequest("members is required");
+    const sequelize = app.get("sequelizeClient");
+    const { chat_members } = sequelize.models;
+
+    if (data.person_id) {
+      context.data = {
+        ...data,
+        name: null,
+        is_group: false,
+        members: [
+          {
+            user_id: user.id,
+          },
+          {
+            user_id: data.person_id,
+          },
+        ],
+      };
     }
 
     return context;
@@ -26,6 +40,13 @@ const handleAfterCreate = () => {
       chat_id: result.id,
     }));
     await chat_members.bulkCreate(user);
+
+    if (data.person_id) {
+      context.result = {
+        status: 200,
+        message: "Berhasil menambahkan user baru",
+      };
+    }
     return context;
   };
 };
