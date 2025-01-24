@@ -16,7 +16,7 @@ module.exports = function (app) {
       },
       name: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: true,
       },
       is_group: {
         type: DataTypes.BOOLEAN,
