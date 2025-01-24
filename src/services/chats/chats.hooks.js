@@ -1,6 +1,20 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 const errors = require("@feathersjs/errors");
 
+const handleBeforeCreate = () => {
+  return async (context) => {
+    const { app, data } = context;
+    const { user } = context.params;
+    console.log("dara", data);
+
+    if (!Object.keys(data).includes("members")) {
+      throw new errors.BadRequest("members is required");
+    }
+
+    return context;
+  };
+};
+
 const handleAfterCreate = () => {
   return async (context) => {
     const { app, data, result } = context;
@@ -11,7 +25,6 @@ const handleAfterCreate = () => {
       user_id: item.user_id,
       chat_id: result.id,
     }));
-
     await chat_members.bulkCreate(user);
     return context;
   };
@@ -22,7 +35,7 @@ module.exports = {
     all: [authenticate("jwt")],
     find: [],
     get: [],
-    create: [],
+    create: [handleBeforeCreate()],
     update: [],
     patch: [],
     remove: [],
