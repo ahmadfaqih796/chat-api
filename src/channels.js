@@ -49,26 +49,6 @@ module.exports = function (app) {
     return app.channel("authenticated");
   });
 
-  // app.service("rooms").on("created", (data, conn) => {
-  //   const { connection } = conn.params;
-  //   switch (data.action) {
-  //     case "join":
-  //       return app.channel(data.clientId).join(connection);
-  //     case "leave":
-  //       return app.channel(data.clientId).leave(connection);
-  //     default:
-  //       break;
-  //   }
-  // });
-
-  app.service("comment").publish("created", (data, conn) => {
-    return app.channel(data.client_id);
-  });
-
-  app.service("comment").publish("removed", (data, conn) => {
-    return app.channel(data.client_id);
-  });
-
   // Here you can also add service specific event publishers
   // e.g. the publish the `users` service `created` event to the `admins` channel
   // app.service('users').publish('created', () => app.channel('admins'));
