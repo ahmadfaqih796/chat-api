@@ -47,6 +47,32 @@ const handleBeforePatch = () => {
   };
 };
 
+const handleAfterFind = () => {
+  return async (context) => {
+    const { result } = context;
+
+    const coba = result.map((item) => {
+      const name = item?.chat?.is_group
+        ? item.chat.name
+        : item.chat?.members[0].user.fullname;
+
+      return {
+        id: item?.chat?.id,
+        name: name || "",
+        is_group: item?.chat?.is_group,
+        last_message: item?.messages[0]?.message || "",
+        total_unread: 0,
+      };
+    });
+    context.result = {
+      total: result.length,
+      coba: coba,
+      data: result,
+    };
+    return context;
+  };
+};
+
 module.exports = {
   before: {
     all: [authenticate("jwt")],
@@ -60,16 +86,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [
-      async (context) => {
-        const { result } = context;
-        context.result = {
-          total: result.length,
-          data: result,
-        };
-        return context;
-      },
-    ],
+    find: [handleAfterFind()],
     get: [],
     create: [],
     update: [],

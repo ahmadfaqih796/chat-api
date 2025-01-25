@@ -6,17 +6,16 @@ exports.ChatLists = class ChatLists {
   }
 
   async find(params) {
-    const { query } = params;
+    const { query, user } = params;
     const sequelize = this.app.get("sequelizeClient");
+
     const { chats, chat_members, users, messages, message_status } =
       sequelize.models;
-
-    const userId = query.user_id;
 
     const chatLists = await chat_members.findAll({
       attributes: ["id"],
       where: {
-        user_id: userId,
+        user_id: user.id,
       },
       include: [
         {
@@ -30,7 +29,7 @@ exports.ChatLists = class ChatLists {
               as: "members",
               where: {
                 user_id: {
-                  $ne: userId,
+                  $ne: user.id,
                 },
               },
               include: [
@@ -38,6 +37,18 @@ exports.ChatLists = class ChatLists {
                   attributes: ["id", "fullname", "email"],
                   model: users,
                   as: "user",
+                },
+              ],
+            },
+            {
+              attributes: ["id"],
+              model: messages,
+              as: "messages",
+              include: [
+                {
+                  attributes: ["id"],
+                  model: message_status,
+                  as: "statuses",
                 },
               ],
             },
