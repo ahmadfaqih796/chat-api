@@ -13,34 +13,40 @@ exports.ChatLists = class ChatLists {
 
     const userId = query.user_id;
 
-    const chatlists = await chats.findAll({
+    const chatLists = await chat_members.findAll({
+      attributes: ["id"],
+      where: {
+        user_id: userId,
+      },
       include: [
         {
-          attributes: ["id"],
-          model: chat_members,
-          as: "members",
+          attributes: ["id", "name", "is_group"],
+          model: chats,
+          as: "chat",
           include: [
             {
-              attributes: ["id", "fullname", "email"],
-              model: users,
-              as: "user",
-            },
-          ],
-        },
-        {
-          model: messages,
-          as: "messages",
-          include: [
-            {
-              model: message_status,
-              as: "statuses",
+              attributes: ["id"],
+              model: chat_members,
+              as: "members",
+              where: {
+                user_id: {
+                  $ne: userId,
+                },
+              },
+              include: [
+                {
+                  attributes: ["id", "fullname", "email"],
+                  model: users,
+                  as: "user",
+                },
+              ],
             },
           ],
         },
       ],
     });
 
-    return chatlists;
+    return chatLists;
   }
 
   async get(id, params) {

@@ -60,7 +60,16 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [
+      async (context) => {
+        const { result } = context;
+        context.result = {
+          total: result.length,
+          data: result,
+        };
+        return context;
+      },
+    ],
     get: [],
     create: [],
     update: [],

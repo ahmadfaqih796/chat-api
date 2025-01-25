@@ -51,7 +51,7 @@ module.exports = function (app) {
     });
     messageStatus.belongsTo(models.users, {
       foreignKey: "user_id",
-      as: "user",
+      as: "reader",
     });
   };
 
