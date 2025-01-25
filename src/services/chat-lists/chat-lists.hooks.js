@@ -6,7 +6,7 @@ const handleBeforePatch = () => {
     const { user } = context.params;
 
     const sequelize = app.get("sequelizeClient");
-    const { chats, messages } = sequelize.models;
+    const { chats, messages, message_status } = sequelize.models;
 
     const resultChat = await chats.findOne({
       where: {
@@ -27,16 +27,21 @@ const handleBeforePatch = () => {
       if (resultMessage.length > 0) {
         for (let i = 0; i < resultMessage.length; i++) {
           const message = resultMessage[i];
-          console.log("message", message);
-          await message.update({
-            is_read: true,
-          });
+          console.log("message", message.is_read);
+          if (message.is_read === false) {
+            await message.update({
+              is_read: true,
+            });
+            await message_status.create({
+              message_id: message.id,
+              user_id: user.id,
+              is_read: true,
+              read_at: new Date(),
+            });
+          }
         }
       }
-      console.log("tetetet", resultMessage.length);
     }
-
-    // console.log("masukkk ttt gan", resultChat);
 
     return context;
   };

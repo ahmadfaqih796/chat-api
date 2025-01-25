@@ -6,8 +6,6 @@ exports.ChatLists = class ChatLists {
   }
 
   async find(params) {
-    console.log("masuk dulu gan");
-
     const { query } = params;
     const sequelize = this.app.get("sequelizeClient");
     const { chats, chat_members, users, messages, message_status } =

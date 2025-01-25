@@ -6,12 +6,12 @@ const concatValue = (k, l, r) => (k === "include" ? concat(l, r) : r);
 module.exports = function (options = {}) {
   return async (context) => {
     const sequelize = context.app.get("sequelizeClient");
-    const { users } = sequelize.models;
+    const { message_status } = sequelize.models;
     const include = [
       {
-        attributes: ["email", "name"],
-        model: users,
-        as: "user",
+        //   attributes: ["email", "name"],
+        model: message_status,
+        as: "statuses",
       },
     ];
 
