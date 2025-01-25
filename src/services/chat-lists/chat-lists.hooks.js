@@ -1,5 +1,17 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 
+const checkLastMessage = (data) => {
+  if (data.length > 0) {
+    return {
+      content: data[data.length - 1].content,
+      message_type: data[data.length - 1].message_type,
+    };
+  }
+  return {
+    content: "",
+    message_type: "",
+  };
+};
 const handleBeforePatch = () => {
   return async (context) => {
     const { app, data, id: chatId } = context;
@@ -27,7 +39,6 @@ const handleBeforePatch = () => {
       if (resultMessage.length > 0) {
         for (let i = 0; i < resultMessage.length; i++) {
           const message = resultMessage[i];
-          console.log("message", message.is_read);
           if (message.is_read === false) {
             await message.update({
               is_read: true,
@@ -50,24 +61,46 @@ const handleBeforePatch = () => {
 const handleAfterFind = () => {
   return async (context) => {
     const { result } = context;
+    const sequelize = context.app.get("sequelizeClient");
+    const { messages } = sequelize.models;
 
-    const coba = result.map((item) => {
-      const name = item?.chat?.is_group
-        ? item.chat.name
-        : item.chat?.members[0].user.fullname;
+    const chatResults = await Promise.all(
+      result.map(async (item) => {
+        const name = item?.chat?.is_group
+          ? item.chat.name
+          : item.chat?.members[0]?.user?.fullname;
 
-      return {
-        id: item?.chat?.id,
-        name: name || "",
-        is_group: item?.chat?.is_group,
-        last_message: item?.messages[0]?.message || "",
-        total_unread: 0,
-      };
-    });
+        // Get the last message
+        const message = checkLastMessage(item?.chat?.messages);
+
+        // Count total unread messages for this chat
+        const totalUnread = await messages.count({
+          where: {
+            chat_id: item?.chat?.id,
+            is_read: false,
+            sender_id: {
+              $ne: context.params.user.id, // Exclude messages sent by the current user
+            },
+          },
+        });
+
+        return {
+          id: item?.chat?.id,
+          // ...(item.chat?.members?.[0]?.user.id && {
+          //   user_id: item.chat?.members[0]?.user?.id,
+          // }),
+          name: name || "",
+          is_group: item?.chat?.is_group,
+          last_message: message,
+          total_unread: totalUnread,
+        };
+      })
+    );
+
     context.result = {
       total: result.length,
-      coba: coba,
-      data: result,
+      data: chatResults,
+      xxxx: result,
     };
     return context;
   };

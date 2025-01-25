@@ -41,8 +41,10 @@ exports.ChatLists = class ChatLists {
               ],
             },
             {
-              attributes: ["id"],
+              attributes: ["content", "message_type", "is_read"],
               model: messages,
+              order: [["created_at", "DESC"]],
+              limit: 1,
               as: "messages",
               include: [
                 {
