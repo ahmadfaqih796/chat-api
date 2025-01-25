@@ -67,6 +67,10 @@ module.exports = function (app) {
       foreignKey: "sender_id",
       as: "sender",
     });
+    messages.hasMany(models.message_status, {
+      foreignKey: "message_id",
+      as: "statuses",
+    });
   };
 
   return messages;
