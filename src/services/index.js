@@ -5,6 +5,7 @@ const email = require("./email/email.service.js");
 const chats = require("./chats/chats.service.js");
 const chatMembers = require("./chat-members/chat-members.service.js");
 const messageStatus = require("./message-status/message-status.service.js");
+const chatLists = require('./chat-lists/chat-lists.service.js');
 // eslint-disable-next-line no-unused-vars
 module.exports = function (app) {
   app.configure(users);
@@ -14,4 +15,5 @@ module.exports = function (app) {
   app.configure(chats);
   app.configure(chatMembers);
   app.configure(messageStatus);
+  app.configure(chatLists);
 };
