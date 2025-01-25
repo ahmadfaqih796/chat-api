@@ -1,6 +1,35 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 const errors = require("@feathersjs/errors");
 const includeChatMembers = require("../../hooks/includes/include-chat-members");
+const log = require("../../hooks/log");
+
+const handleBeforeFind = () => {
+  return async (context) => {
+    const { app, params } = context;
+    const sequelize = app.get("sequelizeClient");
+    const { chat_members } = sequelize.models;
+
+    const include = [
+      {
+        attributes: ["id", "email", "fullname"],
+        model: chat_members,
+        as: "members",
+        through: {
+          attributes: [],
+        },
+      },
+    ];
+
+    const sequelizeOptions = mergeWithKey(concatValue, params.sequelize, {
+      include,
+      raw: false,
+    });
+
+    context.params.sequelize = sequelizeOptions;
+
+    return context;
+  };
+};
 
 const handleBeforeCreate = () => {
   return async (context) => {

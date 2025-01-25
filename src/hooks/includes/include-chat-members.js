@@ -29,14 +29,15 @@ module.exports = function (options = {}) {
         model: chat_members,
         as: "members",
         where: whereMemberOptions,
-        // include: [
-        //   {
-        //     attributes: ["id", "email", "fullname"],
-        //     model: users,
-        //     as: "user",
-        //     // where: whereUserOptions,
-        //   },
-        // ],
+
+        include: [
+          {
+            attributes: ["id", "email", "fullname"],
+            model: users,
+            as: "user",
+            // where: whereUserOptions,
+          },
+        ],
       },
     ];
 
@@ -47,6 +48,7 @@ module.exports = function (options = {}) {
         include,
         raw: false,
         order: [["created_at", "ASC"]],
+        logging: console.log,
       }
     );
 

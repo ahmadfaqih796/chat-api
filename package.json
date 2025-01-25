@@ -48,6 +48,7 @@
     "@feathersjs/transport-commons": "^5.0.8",
     "compression": "^1.7.4",
     "cors": "^2.8.5",
+    "crocks": "^0.12.4",
     "dotenv": "^16.3.1",
     "feathers-authentication-management": "^5.0.0",
     "feathers-hooks-common": "^8.1.1",
