@@ -1,5 +1,6 @@
 const { authenticate } = require("@feathersjs/authentication").hooks;
 const errors = require("@feathersjs/errors");
+const includeChatMembers = require("../../hooks/includes/include-chat-members");
 
 const handleBeforeCreate = () => {
   return async (context) => {
@@ -54,7 +55,7 @@ const handleAfterCreate = () => {
 module.exports = {
   before: {
     all: [authenticate("jwt")],
-    find: [],
+    find: [includeChatMembers()],
     get: [],
     create: [handleBeforeCreate()],
     update: [],

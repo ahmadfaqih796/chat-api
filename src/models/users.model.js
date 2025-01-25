@@ -89,6 +89,10 @@ module.exports = function (app) {
   users.associate = function (models) {
     // Define associations here
     // See https://sequelize.org/master/manual/assocs.html
+    users.hasMany(models.chat_members, {
+      foreignKey: "user_id",
+      as: "chatMembers",
+    });
   };
 
   return users;
