@@ -14,13 +14,15 @@ module.exports = function (app) {
     // real-time connection, e.g. when logging in via REST
     if (connection) {
       // Obtain the logged in user from the connection
-      // const user = connection.user;
+      const user = connection.user;
+      console.log("masuk", user);
 
       // The connection is no longer anonymous, remove it
       app.channel("anonymous").leave(connection);
 
       // Add it to the authenticated user channel
       app.channel("authenticated").join(connection);
+      app.channel("chat").join(connection);
 
       // Channels can be named anything and joined on any condition
 
@@ -33,6 +35,17 @@ module.exports = function (app) {
       // Easily organize users by email and userid for things like messaging
       // app.channel(`emails/${user.email}`).join(connection);
       // app.channel(`userIds/${user.id}`).join(connection);
+    }
+  });
+
+  app.on("logout", (connection) => {
+    // On a real-time logout, remove the connection from all channels
+    if (connection) {
+      const user = connection.user;
+      console.log("keluar", user);
+      app.channel("anonymous").leave(connection);
+      app.channel("authenticated").leave(connection);
+      app.channel("chat").leave(connection);
     }
   });
 
@@ -77,12 +90,12 @@ module.exports = function (app) {
   //   }
   // });
 
-  app.service("messages").publish("created", (data, conn) => {
-    console.log("ini pesan", data);
-    return app.channel(`chat`);
-  });
+  // app.service("messages").publish("created", (data, conn) => {
+  //   console.log("ini pesan", data);
+  //   return app.channel(`chat`);
+  // });
 
-  app.service("messages").publish("removed", (data, conn) => {
-    return app.channel(`chat`);
-  });
+  // app.service("messages").publish("removed", (data, conn) => {
+  //   return app.channel(`chat`);
+  // });
 };

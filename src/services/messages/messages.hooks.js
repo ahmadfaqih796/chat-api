@@ -15,6 +15,27 @@ const handleBeforeCreate = () => {
   };
 };
 
+const handleAfterCreate = () => {
+  return async (context) => {
+    const { app, params } = context;
+    if (params.connection) {
+      app.channel(`chat`).join(params.connection);
+    }
+    // app.service("messages").emit("created", result);
+    // app.service("messages").emit("created", context.dispatch || result);
+    return context;
+  };
+};
+
+const handleAfterRemove = () => {
+  return async (context) => {
+    const { app, result } = context;
+    console.log("🗑️ Pesan dihapus:", result);
+    app.service("messages").emit("removed", result);
+    return context;
+  };
+};
+
 module.exports = {
   before: {
     all: [authenticate("jwt")],
@@ -30,10 +51,10 @@ module.exports = {
     all: [],
     find: [],
     get: [],
-    create: [],
+    create: [handleAfterCreate()],
     update: [],
     patch: [],
-    remove: [],
+    remove: [handleAfterRemove()],
   },
 
   error: {
