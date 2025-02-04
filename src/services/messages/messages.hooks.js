@@ -5,11 +5,14 @@ const includeMessageStatus = require("../../hooks/includes/include-message-statu
 
 const handleBeforeCreate = () => {
   return async (context) => {
-    const { data } = context;
+    const { data, app, params } = context;
     const { user } = context.params;
     if (user) {
       data.sender_id = user.id;
       data.is_read = false;
+    }
+    if (params.connection) {
+      app.channel(`chat`).join(params.connection);
     }
     return context;
   };
@@ -19,7 +22,7 @@ const handleAfterCreate = () => {
   return async (context) => {
     const { app, params } = context;
     if (params.connection) {
-      app.channel(`chat`).join(params.connection);
+      app.channel(`chat`).leave(params.connection);
     }
     // app.service("messages").emit("created", result);
     // app.service("messages").emit("created", context.dispatch || result);
@@ -29,7 +32,7 @@ const handleAfterCreate = () => {
 
 const handleAfterRemove = () => {
   return async (context) => {
-    const { app, result } = context;
+    const { app, result, params } = context;
     console.log("🗑️ Pesan dihapus:", result);
     app.service("messages").emit("removed", result);
     return context;
