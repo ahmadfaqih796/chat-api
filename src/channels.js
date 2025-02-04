@@ -60,4 +60,29 @@ module.exports = function (app) {
   //     app.channel(`emails/${data.recipientEmail}`)
   //   ];
   // });
+
+  // app.service("rooms").on("created", (data, conn) => {
+  //   const { connection } = conn.params;
+  //   console.log("masuuuuuk", data);
+  //   switch (data.action) {
+  //     case "join":
+  //       app.channel(`chat/${data.clientId}`).join(connection);
+  //       return;
+  //     case "leave":
+  //       app.channel(`chat/${data.clientId}`).leave(connection);
+  //       // app.channel(`user-list`).leave(connection);
+  //       return;
+  //     default:
+  //       break;
+  //   }
+  // });
+
+  app.service("messages").publish("created", (data, conn) => {
+    console.log("ini pesan", data);
+    return app.channel(`chat`);
+  });
+
+  app.service("messages").publish("removed", (data, conn) => {
+    return app.channel(`chat`);
+  });
 };
